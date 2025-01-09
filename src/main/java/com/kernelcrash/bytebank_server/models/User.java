@@ -2,13 +2,12 @@ package com.kernelcrash.bytebank_server.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table
 public class User {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String userId;
@@ -18,15 +17,15 @@ public class User {
     private double accountBalance;
     private String role;
     private boolean isActive;
-    private String createdAt;
-    private String updatedAt;
-
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private Long primaryWalletId;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Wallet> wallets;
 
     public User() {
+
     }
 
     public String getUserId() {
@@ -93,24 +92,32 @@ public class User {
         isActive = active;
     }
 
-    public String getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
     public void setCreatedAt(String createdAt) {
+        this.createdAt = LocalDateTime.parse(createdAt);
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = LocalDateTime.parse(updatedAt);
+    }
+
     public User(
-            String userId, String username, String email, String passwordHash, double accountBalance, List<Wallet> wallets, String role, boolean isActive, String createdAt, String updatedAt) {
+            String userId, String username, String email, String passwordHash, double accountBalance, List<Wallet> wallets, String role, boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt, Long primaryWalletId) {
         this.userId = userId;
         this.username = username;
         this.email = email;
@@ -121,10 +128,11 @@ public class User {
         this.isActive = isActive;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.primaryWalletId = primaryWalletId;
     }
 
     public User(
-            String username, String email, String passwordHash, double accountBalance, List<Wallet> wallets, String role, boolean isActive, String createdAt, String updatedAt) {
+            String username, String email, String passwordHash, double accountBalance, List<Wallet> wallets, String role, boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt, Long primaryWalletId) {
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;
@@ -134,9 +142,14 @@ public class User {
         this.isActive = isActive;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.primaryWalletId = primaryWalletId;
     }
 
     public Long getPrimaryWalletId() {
         return primaryWalletId;
+    }
+
+    public void setPrimaryWalletId(Long walletId) {
+        this.primaryWalletId = walletId;
     }
 }

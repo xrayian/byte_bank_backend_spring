@@ -2,12 +2,24 @@ package com.kernelcrash.bytebank_server.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "wallets")
 public class Wallet {
+    public Wallet(Long walletId, String walletName, String cryptoType, double balance, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isPrimary, List<Transaction> transactions, User user) {
+        this.walletId = walletId;
+        this.walletName = walletName;
+        this.cryptoType = cryptoType;
+        this.balance = balance;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.isPrimary = isPrimary;
+        this.transactions = transactions;
+        this.user = user;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,11 +27,9 @@ public class Wallet {
     private String walletName;           // Custom name for the wallet
     private String cryptoType;           // Type of cryptocurrency (e.g., BTC, ETH)
     private double balance;              // Current wallet balance
-    private String createdAt;            // Creation timestamp
-    private String updatedAt;            // Last update timestamp
-
-    @Transient
-    private boolean isPrimary;
+    private LocalDateTime createdAt;            // Creation timestamp
+    private LocalDateTime updatedAt;            // Last update timestamp
+    private boolean isPrimary;   // Primary wallet flag
 
     @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> transactions; // List of wallet transactions
@@ -27,6 +37,20 @@ public class Wallet {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;                   // Associated user
+
+    public Wallet() {
+
+    }
+
+    public Wallet(String walletName, String cryptoType, double balance, LocalDateTime createdAt, LocalDateTime updatedAt, List<Transaction> transactions, User user) {
+        this.walletName = walletName;
+        this.cryptoType = cryptoType;
+        this.balance = balance;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.transactions = transactions;
+        this.user = user;
+    }
 
     // Getters and Setters
 
@@ -67,16 +91,16 @@ public class Wallet {
     }
 
 
-    public String getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public String getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
     public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
+        this.updatedAt = LocalDateTime.parse(updatedAt);
     }
 
     public List<Transaction> getTransactions() {
@@ -85,5 +109,25 @@ public class Wallet {
 
     public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
+    }
+
+    public void setCreatedAt(LocalDateTime now) {
+        this.createdAt = now;
+    }
+
+    public void setUpdatedAt(LocalDateTime now) {
+        this.updatedAt = now;
+    }
+
+//    public void setIsPrimary(boolean b) {
+//        this.isPrimary = b;
+//    }
+
+    public void setUser(User newUser) {
+        this.user = newUser;
+    }
+
+    public void setIsPrimary(boolean b) {
+        this.isPrimary = b;
     }
 }

@@ -24,12 +24,15 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public boolean login(@RequestParam String username, @RequestParam String password) {
+    public User login(@RequestParam String username, @RequestParam String password) throws Exception {
         return authService.login(username, password);
     }
 
     @PostMapping("/register")
     public boolean register(@RequestParam String username, @RequestParam String email, @RequestParam String password) {
+        System.out.println("Registering user: " + username);
+        System.out.println("Email: " + email);
+        System.out.println("Password: " + password);
         return authService.register(username, email, password);
     }
 
