@@ -3,6 +3,7 @@ package com.kernelcrash.bytebank_server.controllers;
 import com.kernelcrash.bytebank_server.models.User;
 import com.kernelcrash.bytebank_server.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,8 +25,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public User login(@RequestParam String username, @RequestParam String password) throws Exception {
-        return authService.login(username, password);
+    public ResponseEntity<User> login(@RequestParam String email, @RequestParam String password) throws Exception {
+        return authService.login(email, password);
     }
 
     @PostMapping("/register")

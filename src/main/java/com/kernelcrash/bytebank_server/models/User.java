@@ -12,14 +12,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String userId;
     private String username;
+
+    @Column(unique = true)
     private String email;
+
     private String passwordHash;
     private double accountBalance;
     private String role;
     private boolean isActive;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Long primaryWalletId;
+//    private Long primaryWalletId;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Wallet> wallets;
@@ -128,7 +131,7 @@ public class User {
         this.isActive = isActive;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.primaryWalletId = primaryWalletId;
+//        this.primaryWalletId = primaryWalletId;
     }
 
     public User(
@@ -142,14 +145,14 @@ public class User {
         this.isActive = isActive;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.primaryWalletId = primaryWalletId;
+//        this.primaryWalletId = primaryWalletId;
     }
 
-    public Long getPrimaryWalletId() {
-        return primaryWalletId;
-    }
+//    public Long getPrimaryWalletId() {
+//        return primaryWalletId;
+//    }
 
-    public void setPrimaryWalletId(Long walletId) {
-        this.primaryWalletId = walletId;
-    }
+//    public void setPrimaryWalletId(Long primaryWalletId) {
+//        this.primaryWalletId = primaryWalletId;
+//    }
 }

@@ -8,6 +8,7 @@ import com.kernelcrash.bytebank_server.repositories.WalletRepository;
 import com.kernelcrash.bytebank_server.utils.HashingUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,17 +27,21 @@ public class AuthService {
         this.walletRepository = walletRepository;
     }
 
-    public User login(String username, String password) throws Exception {
-        User user = userRepository.findByUsername(username);
+    public ResponseEntity<User> login(String email, String password) throws Exception {
+        User user = userRepository.findByEmail(email);
         if (user == null) {
-            throw new Exception("User not found");
+            //send response to client
+            return ResponseEntity.badRequest().body(null);
         }
+
+        String username = user.getUsername();
 
         if (!user.getPasswordHash().equals(HashingUtil.hashWithSHA256(username + password))) {
-            throw new Exception("Invalid password");
+            //send response to client
+            return ResponseEntity.badRequest().body(null);
         }
 
-        return user;
+        return ResponseEntity.ok(user);
     }
 
     public boolean register(
@@ -81,17 +86,12 @@ public class AuthService {
         List<Wallet> wallets = new ArrayList<>();
         wallets.add(primaryWallet);
         newUser.setWallets(wallets);
-        newUser.setPrimaryWalletId(primaryWallet.getWalletId()); // Set primary wallet ID
+//        newUser.setPrimaryWalletId(primaryWallet.getWalletId()); // Set primary wallet ID
 
         // Save the user (this will cascade and save the wallet due to relationships)
         userRepository.save(newUser);
-        userRepository.updatePrimaryWalletId(primaryWallet.getWalletId(), newUser.getUserId());
-
         return true;
     }
-
-
-
 
 
     public boolean logout(String username) {

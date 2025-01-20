@@ -9,5 +9,8 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     User findByUsername(String username);
 
-    void updatePrimaryWalletId(Long walletId, String userId);
+    User findByEmail(String email);
+
+    //update primary wallet id
+    //void updatePrimaryWalletId(String userId, Long walletId);
 }
