@@ -75,7 +75,6 @@ public class AuthService {
         Wallet primaryWallet = new Wallet();
         primaryWallet.setWalletName("Primary Wallet");
         primaryWallet.setCryptoType("USD");
-        primaryWallet.setBalance(initialAccountBalance);
         primaryWallet.setCreatedAt(now);
         primaryWallet.setUpdatedAt(now);
         primaryWallet.setIsPrimary(true);
@@ -86,10 +85,30 @@ public class AuthService {
         List<Wallet> wallets = new ArrayList<>();
         wallets.add(primaryWallet);
         newUser.setWallets(wallets);
-//        newUser.setPrimaryWalletId(primaryWallet.getWalletId()); // Set primary wallet ID
 
         // Save the user (this will cascade and save the wallet due to relationships)
+
+        //add a 500 USD transaction to the primary wallet
+        Transaction transaction = new Transaction();
+        transaction.setAmount(500.0);
+        transaction.setType("Welcome Bonus");
+        transaction.setDescription("Welcome Bonus");
+        transaction.setWallet(primaryWallet);
+        transaction.setTimestamp(String.valueOf(System.currentTimeMillis()));
+        List<Transaction> transactions = primaryWallet.getTransactions();
+        transactions.add(transaction);
+        primaryWallet.setTransactions(transactions);
+
         userRepository.save(newUser);
+        return true;
+    }
+
+    public boolean deleteUser(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return false;
+        }
+        userRepository.delete(user);
         return true;
     }
 
@@ -126,4 +145,13 @@ public class AuthService {
         return userRepository.findAll();
     }
 
+    public ResponseEntity<User> refreshUser(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+        user.setUpdatedAt(LocalDateTime.now());
+        userRepository.save(user);
+        return ResponseEntity.ok(user);
+    }
 }

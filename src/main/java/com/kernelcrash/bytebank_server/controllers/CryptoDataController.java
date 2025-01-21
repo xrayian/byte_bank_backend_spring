@@ -23,14 +23,14 @@ public class CryptoDataController {
 
     @GetMapping("/getKlines")
     public ResponseEntity<String> getKlines(@RequestParam String fsymbol, @RequestParam String tosymbol, @RequestParam int aggregate, @RequestParam int limit) {
-        System.out.println("Fetching data from CryptoCompare...");
+//        System.out.println("Fetching data from CryptoCompare...");
         String apiUrl = "https://min-api.cryptocompare.com/data/v2/histoday?fsym=" + fsymbol + "&tsym=" + tosymbol + "&limit=" + limit + "&aggregate=" + aggregate;
         try {
             RestTemplate restTemplate = new RestTemplate();
             String response = restTemplate.getForObject(apiUrl, String.class);
-            System.out.println();
-            System.out.println(response);
-            System.out.println();
+//            System.out.println();
+//            System.out.println(response);
+//            System.out.println();
             Gson gson = new Gson();
             ApiResponse responseObj = gson.fromJson(response, ApiResponse.class);
             return ResponseEntity.ok(gson.toJson(responseObj.Data.Data));

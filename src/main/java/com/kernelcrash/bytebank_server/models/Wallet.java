@@ -9,11 +9,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "wallets")
 public class Wallet {
-    public Wallet(Long walletId, String walletName, String cryptoType, double balance, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isPrimary, List<Transaction> transactions, User user) {
+    public Wallet(Long walletId, String walletName, String cryptoType, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isPrimary, List<Transaction> transactions, User user) {
         this.walletId = walletId;
         this.walletName = walletName;
         this.cryptoType = cryptoType;
-        this.balance = balance;
+
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.isPrimary = isPrimary;
@@ -26,7 +26,7 @@ public class Wallet {
     private Long walletId;               // Unique identifier for the wallet
     private String walletName;           // Custom name for the wallet
     private String cryptoType;           // Type of cryptocurrency (e.g., BTC, ETH)
-    private double balance;              // Current wallet balance
+
     private LocalDateTime createdAt;            // Creation timestamp
     private LocalDateTime updatedAt;            // Last update timestamp
     private boolean isPrimary;   // Primary wallet flag
@@ -42,10 +42,9 @@ public class Wallet {
 
     }
 
-    public Wallet(String walletName, String cryptoType, double balance, LocalDateTime createdAt, LocalDateTime updatedAt, List<Transaction> transactions, User user) {
+    public Wallet(String walletName, String cryptoType, LocalDateTime createdAt, LocalDateTime updatedAt, List<Transaction> transactions, User user) {
         this.walletName = walletName;
         this.cryptoType = cryptoType;
-        this.balance = balance;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.transactions = transactions;
@@ -79,17 +78,12 @@ public class Wallet {
     }
 
     public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
+        return getTransactions().stream().mapToDouble(Transaction::getAmount).sum();
     }
 
     public boolean isPrimary() {
         return Objects.equals(user.getWallets().get(0).getWalletId(), walletId);
     }
-
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
@@ -130,4 +124,16 @@ public class Wallet {
     public void setIsPrimary(boolean b) {
         this.isPrimary = b;
     }
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
 }

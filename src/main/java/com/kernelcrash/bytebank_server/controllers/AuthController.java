@@ -37,6 +37,11 @@ public class AuthController {
         return authService.register(username, email, password);
     }
 
+    @PostMapping("/refresh-user")
+    public ResponseEntity<User> refreshUser(@RequestParam String email) {
+        return authService.refreshUser(email);
+    }
+
     @PostMapping("/logout")
     public boolean logout(@RequestParam String username) {
         return authService.logout(username);
@@ -55,5 +60,10 @@ public class AuthController {
     @PostMapping("/verify-email")
     public boolean verifyEmail(@RequestParam String username, @RequestParam String email) {
         return authService.verifyEmail(username, email);
+    }
+
+    @DeleteMapping("/delete")
+    public boolean deleteUser(@RequestParam String email) {
+        return authService.deleteUser(email);
     }
 }

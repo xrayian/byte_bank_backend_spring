@@ -17,7 +17,6 @@ public class User {
     private String email;
 
     private String passwordHash;
-    private double accountBalance;
     private String role;
     private boolean isActive;
     private LocalDateTime createdAt;
@@ -63,20 +62,20 @@ public class User {
         this.passwordHash = passwordHash;
     }
 
-    public double getAccountBalance() {
-        return accountBalance;
-    }
-
-    public void setAccountBalance(double accountBalance) {
-        this.accountBalance = accountBalance;
-    }
-
     public List<Wallet> getWallets() {
         return wallets;
     }
 
     public void setWallets(List<Wallet> wallets) {
         this.wallets = wallets;
+    }
+
+    public void addWallet(Wallet wallet) {
+        this.wallets.add(wallet);
+    }
+
+    public void removeWallet(Wallet wallet) {
+        this.wallets.remove(wallet);
     }
 
     public String getRole() {
@@ -125,7 +124,6 @@ public class User {
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;
-        this.accountBalance = accountBalance;
         this.wallets = wallets;
         this.role = role;
         this.isActive = isActive;
@@ -139,7 +137,6 @@ public class User {
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;
-        this.accountBalance = accountBalance;
         this.wallets = wallets;
         this.role = role;
         this.isActive = isActive;

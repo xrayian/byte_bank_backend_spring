@@ -1,7 +1,11 @@
 package com.kernelcrash.bytebank_server.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kernelcrash.bytebank_server.models.Wallet;
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 
 @Entity
@@ -16,8 +20,13 @@ public class Transaction {
     private String timestamp;           // Timestamp of the transaction
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;              // Associated wallet
+
+    public Transaction() {
+    }
+
 
     // Getters and Setters
 
