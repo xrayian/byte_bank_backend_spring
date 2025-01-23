@@ -73,7 +73,7 @@ public class AuthService {
 
         // Create a primary wallet and associate it with the user
         Wallet primaryWallet = new Wallet();
-        primaryWallet.setWalletName("Primary Wallet");
+        primaryWallet.setWalletName("Initial Wallet");
         primaryWallet.setCryptoType("USD");
         primaryWallet.setCreatedAt(now);
         primaryWallet.setUpdatedAt(now);
@@ -88,7 +88,7 @@ public class AuthService {
 
         // Save the user (this will cascade and save the wallet due to relationships)
 
-        //add a 500 USD transaction to the primary wallet
+        //add a 500 USD transaction to the initial wallet
         Transaction transaction = new Transaction();
         transaction.setAmount(500.0);
         transaction.setType("Welcome Bonus");
@@ -145,6 +145,8 @@ public class AuthService {
         return userRepository.findAll();
     }
 
+
+    //cache the user for 5 minutes unless the user is updated
     public ResponseEntity<User> refreshUser(String email) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
