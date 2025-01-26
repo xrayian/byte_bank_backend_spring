@@ -56,7 +56,7 @@ public class AuthService {
         }
 
         // Initial User and Wallet properties
-        double initialAccountBalance = 0.0;
+//        double initialAccountBalance = 0.0;
         String role = "Standard User";
         boolean isActive = true;
         LocalDateTime now = LocalDateTime.now();

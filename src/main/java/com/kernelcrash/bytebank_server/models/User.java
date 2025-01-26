@@ -119,7 +119,7 @@ public class User {
     }
 
     public User(
-            String userId, String username, String email, String passwordHash, double accountBalance, List<Wallet> wallets, String role, boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt, Long primaryWalletId) {
+            String userId, String username, String email, String passwordHash, List<Wallet> wallets, String role, boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt, Long primaryWalletId) {
         this.userId = userId;
         this.username = username;
         this.email = email;
@@ -133,7 +133,7 @@ public class User {
     }
 
     public User(
-            String username, String email, String passwordHash, double accountBalance, List<Wallet> wallets, String role, boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt, Long primaryWalletId) {
+            String username, String email, String passwordHash, List<Wallet> wallets, String role, boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt, Long primaryWalletId) {
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;
