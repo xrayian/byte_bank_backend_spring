@@ -118,18 +118,19 @@ public class AuthService {
     }
 
     @Transactional
-    public boolean changePassword(String username, String oldPassword, String newPassword) {
+    public boolean changePassword(String uuid, String oldPassword, String newPassword) {
 
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findById(uuid).orElse(null);
         if (user == null) {
             return false;
         }
+        String username = user.getUsername();
         if (!user.getPasswordHash().equals(HashingUtil.hashWithSHA256(username + oldPassword))) {
             return false;
         }
 
         user.setPasswordHash(HashingUtil.hashWithSHA256(username + newPassword));
-
+        //System.out.println(">>>>> Password changed successfully");
         return true;
     }
 

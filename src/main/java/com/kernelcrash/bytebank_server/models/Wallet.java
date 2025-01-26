@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "wallets")
@@ -82,7 +81,7 @@ public class Wallet {
     }
 
     public boolean isPrimary() {
-        return Objects.equals(user.getWallets().get(0).getWalletId(), walletId);
+        return isPrimary;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -198,4 +198,28 @@ public class TransactionsService {
         return true;
     }
 
+    public boolean changePrimaryWallet(String uuid, double newWalletId, double oldWalletId) {
+        Optional<User> user = userRepository.findById(uuid);
+        if (user.isEmpty()) return false;
+
+        Optional<Wallet> newWalletOpt = walletRepository.findById((long) newWalletId);
+        Optional<Wallet> oldWalletOpt = walletRepository.findById((long) oldWalletId);
+        if (newWalletOpt.isEmpty() || oldWalletOpt.isEmpty()) return false;
+
+        Wallet newWallet = newWalletOpt.get();
+        Wallet oldWallet = oldWalletOpt.get();
+
+        if (!user.get().getWallets().contains(newWallet) || !user.get().getWallets().contains(oldWallet)) return false;
+
+        user.get().getWallets().forEach(wallet -> {
+            if (wallet.getWalletId().equals(oldWallet.getWalletId())) {
+                wallet.setIsPrimary(false);
+            } else if (wallet.getWalletId().equals(newWallet.getWalletId())) {
+                wallet.setIsPrimary(true);
+            }
+        });
+
+        userRepository.save(user.get());
+        return true;
+    }
 }

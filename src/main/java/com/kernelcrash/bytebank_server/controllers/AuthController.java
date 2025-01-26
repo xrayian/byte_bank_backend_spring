@@ -48,8 +48,8 @@ public class AuthController {
     }
 
     @PostMapping("/change-password")
-    public boolean changePassword(@RequestParam String username, @RequestParam String oldPassword, @RequestParam String newPassword) {
-        return authService.changePassword(username, oldPassword, newPassword);
+    public boolean changePassword(@RequestParam String uuid, @RequestParam String oldPassword, @RequestParam String newPassword) {
+        return authService.changePassword(uuid, oldPassword, newPassword);
     }
 
     @PostMapping("/reset-password")

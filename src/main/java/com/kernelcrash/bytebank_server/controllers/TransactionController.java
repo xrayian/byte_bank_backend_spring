@@ -117,6 +117,19 @@ public class TransactionController {
         return transactionsService.convertBetweenWallets(uuid, amount, fromWalletId, toWalletId, usdRates);
     }
 
+    @PostMapping("/change-primary-wallet")
+    public boolean changePrimaryWallet(@RequestParam String uuid, @RequestParam double newWalletId, @RequestParam double oldWalletId) {
+        if (uuid == null || newWalletId == 0 || oldWalletId == 0) {
+            System.err.println("/change-primary-wallet Invalid parameters");
+            System.out.println("uuid: " + uuid);
+            System.out.println("newWalletId: " + newWalletId);
+            System.out.println("oldWalletId: " + oldWalletId);
+            return false;
+        }
+
+        return transactionsService.changePrimaryWallet(uuid, newWalletId, oldWalletId);
+    }
+
     @PostMapping("/open-wallet")
     public ResponseEntity<Boolean> openWallet(@RequestParam String uuid, @RequestParam String walletName, @RequestParam String symbol) {
         if (uuid == null || walletName == null || symbol == null) {
